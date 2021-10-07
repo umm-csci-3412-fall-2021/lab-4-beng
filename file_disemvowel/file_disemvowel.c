@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define BUF_SIZE 1024
 
@@ -25,7 +26,7 @@ int copy_non_vowels(int num_chars, char* in_buf, char* out_buf){
 
   // We know how big the output has to be now,
   // so we can shrink it.
-  realloc(out_buf, consonant_count * sizeof(char));
+  // realloc(out_buf, consonant_count * sizeof(char));
   return consonant_count;
 
 }
@@ -36,6 +37,23 @@ void disemvowel(FILE* input_file, FILE* output_file) {
    * read in a buffer of data, copy the non-vowels to the output
    * buffer, and use fwrite to write that out.
    */
+
+  char* in_buffer = (char*) calloc(BUF_SIZE, sizeof(char));
+  char* out_buffer = (char*) calloc(BUF_SIZE, sizeof(char));
+  //do{
+  //  void* temp_buffer = calloc(BUF_SIZE, sizeof(char));
+  //} while (fread(temp_buffer, sizeof(char), BUF_SIZE, input_file) > 0 && 
+  //    fwrite(temp_buffer, sizeof(char), BUF_SIZE, output_file) > 0);
+  
+  size_t readcount, writecount;
+  do{
+    readcount = fread(in_buffer, sizeof(char), BUF_SIZE, input_file);
+    int conscount = copy_non_vowels((int) readcount, in_buffer, out_buffer);
+    writecount = fwrite(out_buffer, sizeof(char), conscount, output_file);
+  } while (readcount == BUF_SIZE && writecount == BUF_SIZE);
+  
+  free(in_buffer);
+  free(out_buffer);
 }
 
 int main(int argc, char* argv[]) {
@@ -46,5 +64,5 @@ int main(int argc, char* argv[]) {
 
   disemvowel(input_file, output_file);
 
-  return 0; //Signifies succssful completion
+  return 0; //Signifies successful completion
 }
