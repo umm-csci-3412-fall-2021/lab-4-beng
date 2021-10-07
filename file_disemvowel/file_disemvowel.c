@@ -4,7 +4,8 @@
 #define BUF_SIZE 1024
 
 bool is_vowel(char c){
-
+  return (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || 
+      c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U');
 }
 
 int copy_non_vowels(int num_chars, char* in_buf, char* out_buf){
@@ -13,6 +14,20 @@ int copy_non_vowels(int num_chars, char* in_buf, char* out_buf){
    * and this function should return the number of non-vowels that
    * were copied over.
    */
+
+  int consonant_count = 0;
+  for (int i = 0; i < num_chars; i++){
+    char current_char = in_buf[i];
+    if(!is_vowel(current_char)){
+      out_buf[consonant_count++] = current_char;
+    }
+  }
+
+  // We know how big the output has to be now,
+  // so we can shrink it.
+  realloc(out_buf, consonant_count * sizeof(char));
+  return consonant_count;
+
 }
 
 void disemvowel(FILE* input_file, FILE* output_file) {
