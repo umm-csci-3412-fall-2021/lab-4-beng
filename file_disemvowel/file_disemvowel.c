@@ -63,7 +63,28 @@ int main(int argc, char* argv[]) {
   FILE* input_file = stdin;
   FILE* output_file = stdout;
 
+  switch (argc) {
+    case 3:
+      output_file = fopen(argv[2], "w");
+      if(output_file == NULL){
+	return 1;
+      }
+    case 2:
+      input_file = fopen(argv[1], "r");
+      if(input_file == NULL){
+	return 1;
+      }
+    case 1:
+      break;
+    default:
+      printf("Illegal number of arguments");
+      return 1;
+    }
+    
+
   disemvowel(input_file, output_file);
+  fclose(input_file);
+  fclose(output_file);
 
   return 0; //Signifies successful completion
 }
