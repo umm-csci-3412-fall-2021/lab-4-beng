@@ -45,12 +45,13 @@ void disemvowel(FILE* input_file, FILE* output_file) {
   //} while (fread(temp_buffer, sizeof(char), BUF_SIZE, input_file) > 0 && 
   //    fwrite(temp_buffer, sizeof(char), BUF_SIZE, output_file) > 0);
   
-  size_t readcount, writecount;
+  size_t readcount, conscount, writecount;
+
   do{
     readcount = fread(in_buffer, sizeof(char), BUF_SIZE, input_file);
-    int conscount = copy_non_vowels((int) readcount, in_buffer, out_buffer);
+    conscount = copy_non_vowels((int) readcount, in_buffer, out_buffer);
     writecount = fwrite(out_buffer, sizeof(char), conscount, output_file);
-  } while (readcount == BUF_SIZE && writecount == BUF_SIZE);
+  } while (readcount == BUF_SIZE && writecount == conscount);
   
   free(in_buffer);
   free(out_buffer);
