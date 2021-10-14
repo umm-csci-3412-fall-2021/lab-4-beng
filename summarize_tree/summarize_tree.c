@@ -20,6 +20,7 @@ bool is_dir(const char* path) {
   if(stat(path, &buffer) == 0){
     return S_ISDIR(buffer.st_mode);
   } else {
+    perror("Error in is_dir stat function");
     exit(0);
   }
 }
