@@ -32,6 +32,7 @@ bool is_dir(const char* path) {
 void process_path(const char*);
 
 void process_directory(const char* path) {
+  //printf("Processing directory <%s>.\n", path);
   /*
    * Update the number of directories seen, use opendir() to open the
    * directory, and then use readdir() to loop through the entries
@@ -50,7 +51,9 @@ void process_directory(const char* path) {
   chdir(path);
 
   while((target = readdir(newdir)) != NULL){
-    process_path(target->d_name);
+    if(strcmp(target->d_name, ".") != 0 && strcmp(target->d_name, "..") != 0){
+      process_path(target->d_name);
+    }
   }
   free(target);
 
