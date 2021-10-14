@@ -16,13 +16,12 @@ bool is_dir(const char* path) {
    * return value from stat() in case there is a problem, e.g., maybe the
    * the file doesn't actually exist.
    */
-  struct stat *buffer = malloc(sizeof(struct stat));
-  if(stat(path, buffer) == 0){
-    return S_ISDIR(buffer->st_mode);
+  struct stat buffer;
+  if(stat(path, &buffer) == 0){
+    return S_ISDIR(buffer.st_mode);
   } else {
     exit(0);
   }
-  free(buffer);
 }
 
 /* 
@@ -47,7 +46,7 @@ void process_directory(const char* path) {
   num_dirs++;
 
   DIR* newdir = opendir(path);
-  struct dirent* target = malloc(sizeof(struct dirent));
+  struct dirent* target;
   chdir(path);
 
   while((target = readdir(newdir)) != NULL){
